@@ -1,32 +1,81 @@
-# React + TypeScript + Vite
+# ProxyChain
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Build Clash proxy chains in your browser. Point your traffic through an airport
+node **and** a residential exit — flow → airport node → residential proxy →
+destination — with a five-step wizard and zero server upload.
 
-Currently, two official plugins are available:
+**→ [flowers-hurt.github.io/ProxyChain](https://flowers-hurt.github.io/ProxyChain/)**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Everything is processed locally in the browser. Your configs never leave your machine.
 
-## React Compiler
+## Why
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Most tools only accept a complete, valid Clash config file. ProxyChain is a
+config *transformer*, not a validator: it recognizes proxy nodes from a full
+config, a partial `proxies:` section, a bare proxy list, or even a single pasted
+node — and turns them into chained-proxy configuration.
 
-## Expanding the Oxlint configuration
+> Parse as much as possible. Recognize proxies without rejecting input for
+> missing fields. Generate accurately. Keep the user in control.
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Features
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+- **Three ways to import** — upload `.yaml`/`.yml`, paste into a YAML editor, or
+  drop in a few loose proxy lines.
+- **Automatic input detection** — `FULL_CONFIG`, `PROXIES_SECTION`, `PROXY_LIST`,
+  `SINGLE_PROXY`, or `UNKNOWN`. Partial configs are a first-class input, not an error.
+- **Any protocol** — proxy `type` is never hard-coded. ss, vmess, vless, trojan,
+  hysteria2, tuic, anytls, wireguard… all pass through, unknown fields preserved.
+- **Chained proxies** — selected nodes × residential exits, combined via Clash
+  Meta's `dialer-proxy`.
+- **Lossless full-config output** — the original document (comments, `dns`, `tun`,
+  `sniffer`, unknown keys) is preserved; ProxyChain only appends. Never fabricates
+  `mixed-port` / `rules` / `dns` / `tun`.
+- **Flexible export** — full configuration, generated proxies only, or proxies +
+  proxy group. Copy or download.
+- **Bilingual UI** — English / 中文.
+
+## How it works
+
+```
+Full config ──┐
+Partial config┤
+Proxy list ───┼──▶ Parser ──▶ ProxyChain Engine ──▶ YAML
+Pasted node ──┘
+
+Input → Syntax Parse → Structure Detection → Normalization → Proxy Extraction → Chain Engine
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Wizard
+
+1. **Import** — upload, paste, or drop your config
+2. **Select Proxies** — pick the airport nodes to chain
+3. **Residential Proxy** — add exits by form, `host:port:user:pass`, or YAML
+4. **Generate Chain** — preview the `dialer-proxy` nodes and optional proxy group
+5. **Export** — copy or download the result
+
+## Development
+
+```bash
+npm install
+npm run dev      # local dev server
+npm test         # Vitest — parser, chain generator, emitter
+npm run build    # production build
+```
+
+The core (`src/core/`) is pure TypeScript with no UI dependencies and full test
+coverage; the wizard (`src/ui/`) is a React app on top.
+
+## Tech Stack
+
+React · Vite · TypeScript · Tailwind CSS · CodeMirror 6 · [`yaml`](https://github.com/eemeli/yaml) · zustand · react-i18next · Vitest
+
+## Deployment
+
+Pushing to `main` builds and publishes to GitHub Pages via GitHub Actions. The
+Vite `base` defaults to `/ProxyChain/`; override it with `VITE_BASE` for other
+hosts (e.g. `VITE_BASE=/ npm run build` for a root domain or Vercel).
+
+## Privacy
+
+No backend. No upload. No analytics. Proxy credentials and configs stay in your browser.
