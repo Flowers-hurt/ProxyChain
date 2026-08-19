@@ -77,7 +77,7 @@
     "name": "名称",
     "nameHint": "显示名称（可选）",
     "add": "添加",
-    "batchHint": "每行一条：host:port:user:pass 或 host:port",
+    "batchHint": "每行一条 host:port:user:pass，或直接粘贴 YAML 代理节点",
     "import": "导入",
     "batchErrors": "{{count}} 行无法解析：",
     "listTitle": "已添加（{{count}}）",

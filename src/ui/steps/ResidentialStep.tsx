@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppStore } from "../../store";
-import { nextResidentialId, parseBatch } from "../../core/residential";
+import { nextResidentialId, parseResidential } from "../../core/residential";
 import TypeBadge from "../TypeBadge";
 import StepShell from "../StepShell";
 
@@ -107,7 +107,7 @@ function BatchForm() {
   const [errors, setErrors] = useState<{ line: number; text: string }[]>([]);
 
   const importBatch = () => {
-    const { proxies, errors } = parseBatch(text);
+    const { proxies, errors } = parseResidential(text);
     if (proxies.length > 0) addResidentials(proxies);
     setErrors(errors);
     if (errors.length === 0) setText("");

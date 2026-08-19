@@ -77,7 +77,7 @@
     "name": "Name",
     "nameHint": "Display name (optional)",
     "add": "Add",
-    "batchHint": "One per line: host:port:user:pass or host:port",
+    "batchHint": "One per line as host:port:user:pass — or paste YAML proxy entries",
     "import": "Import",
     "batchErrors": "{{count}} lines could not be parsed:",
     "listTitle": "Added ({{count}})",

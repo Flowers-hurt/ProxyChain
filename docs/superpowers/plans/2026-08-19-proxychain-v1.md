@@ -24,9 +24,9 @@
 
 **Files:** Create Vite project in repo root (`package.json`, `vite.config.ts`, `tsconfig*.json`, `index.html`, `src/main.tsx`, `src/App.tsx`, Tailwind config, `src/index.css`).
 
-- [ ] `npm create vite@latest . -- --template react-ts`; add deps: `yaml zustand react-i18next i18next @codemirror/lang-yaml @codemirror/state @codemirror/view @codemirror/search codemirror`; dev deps: `vitest tailwindcss @tailwindcss/vite`.
-- [ ] Wire Tailwind v4 via `@tailwindcss/vite` plugin + `@import "tailwindcss"` in index.css; add `"test": "vitest run"` script.
-- [ ] Verify `npm run build` and `npm test` (empty) pass. Commit.
+- [x] `npm create vite@latest . -- --template react-ts`; add deps: `yaml zustand react-i18next i18next @codemirror/lang-yaml @codemirror/state @codemirror/view @codemirror/search codemirror`; dev deps: `vitest tailwindcss @tailwindcss/vite`.
+- [x] Wire Tailwind v4 via `@tailwindcss/vite` plugin + `@import "tailwindcss"` in index.css; add `"test": "vitest run"` script.
+- [x] Verify `npm run build` and `npm test` (empty) pass. Commit.
 
 ### Task 2: Core types + syntax parser
 
@@ -41,7 +41,7 @@ export interface SyntaxError_ { line: number; column: number; message: string; }
 // syntax.ts
 export function parseSyntax(input: string): { ok: true; document: Document; value: unknown } | { ok: false; error: SyntaxError_ }
 ```
-- [ ] Tests: valid YAML → ok with value; broken YAML (`a:\n  - b\n c: d` style) → error with correct line/column; empty input → ok:false with message. Implement with `yaml` `parseDocument`, map `doc.errors[0].linePos`. Commit.
+- [x] Tests: valid YAML → ok with value; broken YAML (`a:\n  - b\n c: d` style) → error with correct line/column; empty input → ok:false with message. Implement with `yaml` `parseDocument`, map `doc.errors[0].linePos`. Commit.
 
 ### Task 3: Input type detection
 
@@ -51,7 +51,7 @@ export function parseSyntax(input: string): { ok: true; document: Document; valu
 
 Rules: object with any Clash top-level key beyond `proxies` (`proxy-groups`, `rules`, `mixed-port`, `port`, `socks-port`, `dns`, `tun`, `sniffer`, `mode`, `allow-lan`, `external-controller`, …) → FULL_CONFIG; object with `proxies` array → PROXIES_SECTION; array of proxy-like items (`name`+`type` or `server`+`port`) → PROXY_LIST; object that is itself proxy-like → SINGLE_PROXY; else UNKNOWN.
 
-- [ ] Tests = spec §19 Cases 1–5 verbatim (Case 5 inline flow-style anytls → PROXY_LIST), plus scalars/empty → UNKNOWN. Commit.
+- [x] Tests = spec §19 Cases 1–5 verbatim (Case 5 inline flow-style anytls → PROXY_LIST), plus scalars/empty → UNKNOWN. Commit.
 
 ### Task 4: Normalization
 
@@ -64,7 +64,7 @@ export function normalize(value: unknown, inputType: InputType, doc: Document): 
 export type ParseResult = { ok: true; config: NormalizedConfig } | { ok: false; error: SyntaxError_ } | { ok: true; config: NormalizedConfig & { inputType: "UNKNOWN" } }
 export function parseInput(input: string): ParseResult   // syntax → detect → normalize
 ```
-- [ ] Proxy extraction keeps every raw field in `raw`; skips non-object entries; `id` = stable index-based. Tests: PROXIES_SECTION auto-completes model (proxyGroups: []), anytls raw fields preserved, FULL_CONFIG counts groups/rules/otherKeys. Commit.
+- [x] Proxy extraction keeps every raw field in `raw`; skips non-object entries; `id` = stable index-based. Tests: PROXIES_SECTION auto-completes model (proxyGroups: []), anytls raw fields preserved, FULL_CONFIG counts groups/rules/otherKeys. Commit.
 
 ### Task 5: Residential proxies
 
@@ -75,7 +75,7 @@ export function parseInput(input: string): ParseResult   // syntax → detect �
 export interface ResidentialProxy { id: string; name: string; type: string; server: string; port: number; username?: string; password?: string; extra: Record<string, unknown>; }
 export function parseBatch(text: string, defaultType?: string): { proxies: ResidentialProxy[]; errors: { line: number; text: string }[] }
 ```
-- [ ] Batch accepts `host:port:user:pass` and `host:port` per line, ignores blanks/comments, reports bad lines. Commit.
+- [x] Batch accepts `host:port:user:pass` and `host:port` per line, ignores blanks/comments, reports bad lines. Commit.
 
 ### Task 6: Chain generator
 
@@ -87,7 +87,7 @@ export interface ChainNode { name: string; config: Record<string, unknown>; node
 export function generateChains(nodes: ProxyNode[], residentials: ResidentialProxy[], existingNames: string[]): ChainNode[]
 export function buildProxyGroup(name: string, chainNames: string[]): Record<string, unknown>
 ```
-- [ ] Cartesian product; config = residential fields + `dialer-proxy: node.name`; name `Chain | ${node.name} → ${resi.name}` deduped vs existingNames with ` (2)` suffixes; group = `{ name, type: "select", proxies: chainNames }`. Tests: counts (3×2=6), dialer-proxy correctness, dedup. Commit.
+- [x] Cartesian product; config = residential fields + `dialer-proxy: node.name`; name `Chain | ${node.name} → ${resi.name}` deduped vs existingNames with ` (2)` suffixes; group = `{ name, type: "select", proxies: chainNames }`. Tests: counts (3×2=6), dialer-proxy correctness, dedup. Commit.
 
 ### Task 7: Emit
 
@@ -99,7 +99,7 @@ export type OutputMode = "FULL" | "PROXIES_ONLY" | "PROXIES_AND_GROUPS";
 export interface EmitOptions { mode: OutputMode; chains: ChainNode[]; group?: { name: string } | null; config: NormalizedConfig; }
 export function emit(opts: EmitOptions): string
 ```
-- [ ] FULL + originalDocument: append chain configs to `proxies` seq, append group to `proxy-groups` (create seq only if group requested and key missing) via Document mutation → `doc.toString()`; comments/dns/tun/unknown keys survive (assert `# comment` and `sniffer` in output). FULL + partial input: emit only provided sections + generated. PROXIES_ONLY → `proxies:` with original? No — chains only, per spec §17. PROXIES_AND_GROUPS → chains + group. Round-trip: output re-parses, node count = original + chains. Commit.
+- [x] FULL + originalDocument: append chain configs to `proxies` seq, append group to `proxy-groups` (create seq only if group requested and key missing) via Document mutation → `doc.toString()`; comments/dns/tun/unknown keys survive (assert `# comment` and `sniffer` in output). FULL + partial input: emit only provided sections + generated. PROXIES_ONLY → `proxies:` with original? No — chains only, per spec §17. PROXIES_AND_GROUPS → chains + group. Round-trip: output re-parses, node count = original + chains. Commit.
 
 ### Task 8: Store + i18n
 
@@ -107,39 +107,39 @@ export function emit(opts: EmitOptions): string
 
 **Produces:** zustand store: `{ step, inputMode, rawInput, fileName, parseResult, selectedIds, residentials, chainSelection, createGroup, groupName, outputMode, setX…, reset }` with derived defaults (outputMode defaults FULL for FULL_CONFIG else PROXIES_AND_GROUPS when group enabled).
 
-- [ ] All UI strings in locale files (en per spec copy; zh translations); language toggle persisted to localStorage. Commit.
+- [x] All UI strings in locale files (en per spec copy; zh translations); language toggle persisted to localStorage. Commit.
 
 ### Task 9: UI — invoke frontend-design skill, build wizard shell + Step 1 Import
 
 **Files:** Create `src/ui/Layout.tsx`, `src/ui/Stepper.tsx`, `src/ui/steps/ImportStep.tsx`, `src/ui/YamlEditor.tsx` (CodeMirror wrapper: highlighting, line numbers, search, fullscreen, clear, format, error line decoration), `src/ui/SummaryCard.tsx`.
 
-- [ ] Invoke `superpowers:frontend-design` before building; design: refined, professional, minimal.
-- [ ] Landing hero + Input Mode radio (Upload File / Paste Configuration); drag-drop zone (.yaml/.yml) → parse → `✓ name — N proxies / N groups / N rules [Continue]`; paste mode: YamlEditor + Parse button + 500ms debounce auto-parse; syntax error panel (line/col/message + editor marker); partial-config success notice per spec §11. Commit.
+- [x] Invoke `superpowers:frontend-design` before building; design: refined, professional, minimal.
+- [x] Landing hero + Input Mode radio (Upload File / Paste Configuration); drag-drop zone (.yaml/.yml) → parse → `✓ name — N proxies / N groups / N rules [Continue]`; paste mode: YamlEditor + Parse button + 500ms debounce auto-parse; syntax error panel (line/col/message + editor marker); partial-config success notice per spec §11. Commit.
 
 ### Task 10: UI — Step 2 Select Proxies
 
 **Files:** Create `src/ui/steps/SelectStep.tsx`, `src/ui/TypeBadge.tsx`.
 
-- [ ] Checkbox list: name, TYPE badge, `server:port`; toolbar Search / Select All / Clear / Invert / Filter by Type (dynamic types from data); count header `Proxy Nodes (N)`. Commit.
+- [x] Checkbox list: name, TYPE badge, `server:port`; toolbar Search / Select All / Clear / Invert / Filter by Type (dynamic types from data); count header `Proxy Nodes (N)`. Commit.
 
 ### Task 11: UI — Step 3 Residential
 
 **Files:** Create `src/ui/steps/ResidentialStep.tsx`.
 
-- [ ] Form (type select socks5/http/ss + free text, server, port, username, password, name auto-default) + batch paste textarea with per-line error report; list with remove. Commit.
+- [x] Form (type select socks5/http/ss + free text, server, port, username, password, name auto-default) + batch paste textarea with per-line error report; list with remove. Commit.
 
 ### Task 12: UI — Step 4 Generate Chain
 
 **Files:** Create `src/ui/steps/ChainStep.tsx`.
 
-- [ ] Combo preview (all cartesian pairs, checkbox each, default all on), Create Proxy Group toggle + editable group name, live count. Commit.
+- [x] Combo preview (all cartesian pairs, checkbox each, default all on), Create Proxy Group toggle + editable group name, live count. Commit.
 
 ### Task 13: UI — Step 5 Export
 
 **Files:** Create `src/ui/steps/ExportStep.tsx`.
 
-- [ ] Output Mode radios (Full Configuration / Generated Proxies Only / Proxies + Proxy Groups) with input-type-aware default; read-only YamlEditor preview; Copy / Download `proxychain.yaml`. Commit.
+- [x] Output Mode radios (Full Configuration / Generated Proxies Only / Proxies + Proxy Groups) with input-type-aware default; read-only YamlEditor preview; Copy / Download `proxychain.yaml`. Commit.
 
 ### Task 14: Final verification
 
-- [ ] `npm test` all green; `npm run build` clean; run dev server and manually execute spec §19 Cases 1–5 end-to-end; fix findings; final commit.
+- [x] `npm test` all green; `npm run build` clean; run dev server and manually execute spec §19 Cases 1–5 end-to-end; fix findings; final commit.
