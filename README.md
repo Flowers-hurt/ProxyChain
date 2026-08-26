@@ -1,5 +1,7 @@
 # ProxyChain
 
+**English** | [简体中文](./README.zh-CN.md)
+
 Build Clash proxy chains in your browser. Point your traffic through an airport
 node **and** a residential exit — flow → airport node → residential proxy →
 destination — with a five-step wizard and zero server upload.
