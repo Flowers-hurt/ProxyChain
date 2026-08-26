@@ -64,6 +64,36 @@
 
    <img src="static/images/step5.png" alt="第 5 步 —— 导出" width="760" />
 
+## 项目结构
+
+```
+src/
+├── core/                    # 纯 TypeScript —— 零 UI 依赖，单元测试全覆盖
+│   ├── parser/
+│   │   ├── syntax.ts        # YAML → Document，或 {line, column, message} 错误
+│   │   ├── detect.ts        # 输入类型检测（完整 / 片段 / 列表 / 单节点）
+│   │   ├── normalize.ts     # 构建 NormalizedConfig，自动补全不完整输入
+│   │   └── index.ts         # parseInput() 流水线 —— 对外入口
+│   ├── residential.ts       # 住宅代理模型；解析 host:port:user:pass 和 YAML
+│   ├── chain.ts             # 笛卡尔积链式生成 + 代理组
+│   ├── emit.ts              # 三种输出模式；完整配置无损往返
+│   └── types.ts             # 核心共享类型
+├── ui/                      # React 五步向导
+│   ├── steps/               # 导入 · 选择节点 · 住宅代理 · 生成链 · 导出
+│   ├── Layout.tsx           # 应用外壳：头部、主题切换、链路导轨步骤条
+│   ├── YamlEditor.tsx       # CodeMirror 6 编辑器，主题自适应 YAML 高亮
+│   ├── theme.ts             # 浅色 / 跟随系统 / 深色偏好（持久化）
+│   └── …                    # Stepper、StepShell、SummaryCard、TypeBadge、useChains
+├── store.ts                 # zustand 应用状态
+├── i18n.ts + locales/       # English / 中文
+└── index.css                # 设计 token：明暗两套调色板、环境光晕
+static/images/               # README 截图
+docs/                        # 设计规格与实现计划
+.github/workflows/deploy.yml # 推送 main 后构建并部署到 GitHub Pages
+```
+
+测试与被测代码放在一起（`src/core/**` 下的 `*.test.ts`），并编码了规格中的验收用例。
+
 ## 本地开发
 
 ```bash

@@ -70,6 +70,37 @@ Input → Syntax Parse → Structure Detection → Normalization → Proxy Extra
 
    <img src="static/images/step5.png" alt="Step 5 — Export" width="760" />
 
+## Project Structure
+
+```
+src/
+├── core/                    # Pure TypeScript — no UI dependencies, fully unit-tested
+│   ├── parser/
+│   │   ├── syntax.ts        # YAML → Document, or {line, column, message} error
+│   │   ├── detect.ts        # Input type detection (full / partial / list / single node)
+│   │   ├── normalize.ts     # Build NormalizedConfig, auto-complete partial input
+│   │   └── index.ts         # parseInput() pipeline — public entry point
+│   ├── residential.ts       # Residential proxy model; parses host:port:user:pass & YAML
+│   ├── chain.ts             # Cartesian-product chain generation + proxy group
+│   ├── emit.ts              # Three output modes; lossless full-config round-trip
+│   └── types.ts             # Shared core types
+├── ui/                      # React five-step wizard
+│   ├── steps/               # ImportStep · SelectStep · ResidentialStep · ChainStep · ExportStep
+│   ├── Layout.tsx           # App shell: header, theme toggle, chain-rail stepper
+│   ├── YamlEditor.tsx       # CodeMirror 6 editor with theme-aware YAML highlighting
+│   ├── theme.ts             # Light / system / dark preference (persisted)
+│   └── …                    # Stepper, StepShell, SummaryCard, TypeBadge, useChains
+├── store.ts                 # zustand app state
+├── i18n.ts + locales/       # English / 中文
+└── index.css                # Design tokens: light & dark palettes, ambient glows
+static/images/               # README screenshots
+docs/                        # Design spec & implementation plan
+.github/workflows/deploy.yml # Build & deploy to GitHub Pages on push to main
+```
+
+Tests live next to the code they cover (`*.test.ts` in `src/core/**`), encoding
+the spec's acceptance cases.
+
 ## Development
 
 ```bash
