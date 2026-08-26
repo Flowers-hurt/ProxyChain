@@ -87,9 +87,25 @@ src/
 ├── store.ts                 # zustand 应用状态
 ├── i18n.ts + locales/       # English / 中文
 └── index.css                # 设计 token：明暗两套调色板、环境光晕
+public/                      # 原样拷贝的静态资源（favicon）
 static/images/               # README 截图
 docs/                        # 设计规格与实现计划
 .github/workflows/deploy.yml # 推送 main 后构建并部署到 GitHub Pages
+index.html                   # 入口页面：字体、theme-color meta、首屏前主题脚本
+vite.config.ts               # Vite + React + Tailwind 插件；GitHub Pages base 路径
+tsconfig.json                # 项目引用（project references）根配置，拆分为：
+tsconfig.app.json            #   · 浏览器代码（src/）
+tsconfig.node.json           #   · Node 环境（vite.config.ts）
+.oxlintrc.json               # oxlint：React hooks 正确性、TS 规则
+.editorconfig                # 2 空格缩进 · LF · UTF-8，编辑器无关
+.nvmrc                       # Node 22（与 package.json engines 一致）
+.gitignore                   # node_modules、dist、编辑器与本地 agent 文件
+package.json                 # 脚本、依赖、项目元数据
+AGENTS.md                    # 唯一事实来源：架构与硬性规则
+CLAUDE.md                    # Claude Code 入口 —— 链接到 AGENTS.md
+CONTRIBUTING.md              # 贡献指南（TDD 工作流、主题/国际化规则）
+SECURITY.md                  # 漏洞报告政策
+LICENSE                      # MIT
 ```
 
 测试与被测代码放在一起（`src/core/**` 下的 `*.test.ts`），并编码了规格中的验收用例。

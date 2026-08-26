@@ -93,9 +93,25 @@ src/
 ├── store.ts                 # zustand app state
 ├── i18n.ts + locales/       # English / 中文
 └── index.css                # Design tokens: light & dark palettes, ambient glows
+public/                      # Static assets copied as-is (favicon)
 static/images/               # README screenshots
 docs/                        # Design spec & implementation plan
 .github/workflows/deploy.yml # Build & deploy to GitHub Pages on push to main
+index.html                   # Entry page: fonts, theme-color metas, pre-paint theme script
+vite.config.ts               # Vite + React + Tailwind plugins; GitHub Pages base path
+tsconfig.json                # Project-references root, splits into:
+tsconfig.app.json            #   · browser code (src/)
+tsconfig.node.json           #   · Node context (vite.config.ts)
+.oxlintrc.json               # oxlint: React hooks correctness, TS rules
+.editorconfig                # 2-space indent · LF · UTF-8, editor-agnostic
+.nvmrc                       # Node 22 (matches package.json engines)
+.gitignore                   # node_modules, dist, editor & local agent files
+package.json                 # Scripts, dependencies, project metadata
+AGENTS.md                    # Single source of truth: architecture & hard rules
+CLAUDE.md                    # Claude Code entry point — links to AGENTS.md
+CONTRIBUTING.md              # How to contribute (TDD workflow, theme/i18n rules)
+SECURITY.md                  # Vulnerability reporting policy
+LICENSE                      # MIT
 ```
 
 Tests live next to the code they cover (`*.test.ts` in `src/core/**`), encoding
