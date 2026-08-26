@@ -54,7 +54,7 @@ function AddForm() {
   );
 
   return (
-    <div className="rounded-lg border border-line bg-raised p-4">
+    <div className="rounded-xl border border-line bg-raised p-4 shadow-card">
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         {field(
           t("residential.type"),
@@ -92,7 +92,7 @@ function AddForm() {
         type="button"
         onClick={add}
         disabled={!valid}
-        className="mt-4 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-on-accent transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:bg-overlay disabled:text-fg-faint"
+        className="mt-4 rounded-lg bg-accent shadow-card px-4 py-2 text-sm font-medium text-on-accent transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:bg-overlay disabled:text-fg-faint"
       >
         {t("residential.add")}
       </button>
@@ -114,7 +114,7 @@ function BatchForm() {
   };
 
   return (
-    <div className="rounded-lg border border-line bg-raised p-4">
+    <div className="rounded-xl border border-line bg-raised p-4 shadow-card">
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
@@ -127,7 +127,7 @@ function BatchForm() {
           type="button"
           onClick={importBatch}
           disabled={text.trim() === ""}
-          className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-on-accent transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:bg-overlay disabled:text-fg-faint"
+          className="rounded-lg bg-accent shadow-card px-4 py-2 text-sm font-medium text-on-accent transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:bg-overlay disabled:text-fg-faint"
         >
           {t("residential.import")}
         </button>
@@ -189,7 +189,7 @@ export default function ResidentialStep() {
         {residentials.length === 0 ? (
           <p className="text-sm text-fg-faint">{t("residential.empty")}</p>
         ) : (
-          <ul className="divide-y divide-line-soft rounded-lg border border-line bg-surface">
+          <ul className="divide-y divide-line-soft rounded-xl border border-line bg-surface shadow-card">
             {residentials.map((r) => (
               <li key={r.id} className="flex items-center gap-3 px-3 py-2.5">
                 <div className="min-w-0 flex-1">

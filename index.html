@@ -16,6 +16,13 @@
     />
   </head>
   <body>
+    <script>
+      // Apply the saved theme before first paint to avoid a flash.
+      try {
+        const pref = JSON.parse(localStorage.getItem("proxychain-theme"))?.state?.pref;
+        if (pref === "light" || pref === "dark") document.documentElement.dataset.theme = pref;
+      } catch {}
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

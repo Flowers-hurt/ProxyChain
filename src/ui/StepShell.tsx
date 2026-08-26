@@ -26,14 +26,14 @@ export default function StepShell({
 
   return (
     <section>
-      <div className="mb-6">
-        <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent">
+      <div className="mb-7">
+        <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent lg:hidden">
           Step {String(step).padStart(2, "0")} — {t(`steps.${STEP_KEYS[step - 1]}`)}
         </div>
-        <h1 className="mt-1.5 font-display text-2xl font-bold tracking-tight text-fg">
+        <h1 className="mt-1.5 font-display text-2xl font-bold tracking-tight text-fg sm:text-3xl lg:mt-0">
           {title}
         </h1>
-        {intro && <p className="mt-1 text-sm text-fg-muted">{intro}</p>}
+        {intro && <p className="mt-1.5 text-sm text-fg-muted">{intro}</p>}
       </div>
 
       {children}
@@ -43,7 +43,7 @@ export default function StepShell({
           <button
             type="button"
             onClick={() => setStep(step - 1)}
-            className="rounded-lg border border-line px-4 py-2 text-sm text-fg-muted transition-colors hover:border-line-strong hover:text-fg"
+            className="rounded-lg border border-line bg-surface px-4 py-2 text-sm text-fg-muted shadow-card transition-colors hover:border-line-strong hover:text-fg"
           >
             ← {t("nav.back")}
           </button>
@@ -54,7 +54,7 @@ export default function StepShell({
           <button
             type="button"
             onClick={onContinue}
-            className="rounded-lg bg-accent px-5 py-2 text-sm font-medium text-on-accent transition-colors hover:bg-accent-hover"
+            className="rounded-lg bg-accent shadow-card px-5 py-2 text-sm font-medium text-on-accent transition-colors hover:bg-accent-hover"
           >
             {continueLabel ?? t("nav.continue")} →
           </button>

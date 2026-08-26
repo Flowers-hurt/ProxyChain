@@ -8,6 +8,7 @@ import { HighlightStyle, syntaxHighlighting } from "@codemirror/language";
 import { tags } from "@lezer/highlight";
 import { parseDocument } from "yaml";
 import { useTranslation } from "react-i18next";
+import { useEffectiveDark } from "./theme";
 
 const setErrorLine = StateEffect.define<number | null>();
 
@@ -93,12 +94,16 @@ export default function YamlEditor({
   const onChangeRef = useRef(onChange);
   onChangeRef.current = onChange;
   const [fullscreen, setFullscreen] = useState(false);
+  const dark = useEffectiveDark();
+  const darkRef = useRef(dark);
+  darkRef.current = dark;
+  const themeCompartmentRef = useRef<Compartment | null>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
     const readOnlyCompartment = new Compartment();
     const themeCompartment = new Compartment();
-    const scheme = window.matchMedia("(prefers-color-scheme: dark)");
+    themeCompartmentRef.current = themeCompartment;
     const view = new EditorView({
       state: EditorState.create({
         doc: value,
@@ -106,7 +111,7 @@ export default function YamlEditor({
           basicSetup,
           yaml(),
           syntaxHighlighting(yamlHighlight),
-          themeCompartment.of(editorTheme(scheme.matches)),
+          themeCompartment.of(editorTheme(darkRef.current)),
           errorLineField,
           readOnlyCompartment.of(EditorState.readOnly.of(readOnly)),
           EditorView.updateListener.of((update) => {
@@ -118,13 +123,10 @@ export default function YamlEditor({
       parent: containerRef.current,
     });
     viewRef.current = view;
-    const onSchemeChange = (e: MediaQueryListEvent) =>
-      view.dispatch({ effects: themeCompartment.reconfigure(editorTheme(e.matches)) });
-    scheme.addEventListener("change", onSchemeChange);
     return () => {
-      scheme.removeEventListener("change", onSchemeChange);
       view.destroy();
       viewRef.current = null;
+      themeCompartmentRef.current = null;
     };
     // The editor owns its document after mount; `value` prop changes sync below.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -143,6 +145,14 @@ export default function YamlEditor({
     viewRef.current?.dispatch({ effects: setErrorLine.of(errorLine) });
   }, [errorLine, value]);
 
+  useEffect(() => {
+    const compartment = themeCompartmentRef.current;
+    if (compartment)
+      viewRef.current?.dispatch({
+        effects: compartment.reconfigure(editorTheme(dark)),
+      });
+  }, [dark]);
+
   const format = () => {
     const doc = parseDocument(value);
     if (doc.errors.length === 0) onChangeRef.current?.(doc.toString({ lineWidth: 0 }));
@@ -156,7 +166,7 @@ export default function YamlEditor({
       className={
         fullscreen
           ? "fixed inset-0 z-50 flex flex-col bg-page p-4"
-          : "flex flex-col rounded-lg border border-line bg-surface overflow-hidden"
+          : "flex flex-col rounded-xl border border-line bg-surface shadow-card overflow-hidden"
       }
     >
       <div className="flex items-center justify-end gap-1 border-b border-line-soft bg-raised px-2 py-1.5">

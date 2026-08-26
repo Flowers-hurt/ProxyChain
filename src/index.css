@@ -2,7 +2,9 @@
 
 /*
  * Semantic tokens, resolved per color scheme below. Utilities reference the
- * raw vars via `@theme inline` so light/dark switching is pure CSS.
+ * raw vars via `@theme inline` so theme switching is pure CSS. The scheme is
+ * chosen by <html data-theme="light|dark">; without the attribute it follows
+ * the system preference.
  */
 @theme inline {
   --color-page: var(--page);
@@ -21,17 +23,20 @@
   --color-ok: var(--ok);
   --color-err: var(--err);
   --color-info: var(--info);
+  --shadow-card: var(--elev-card);
+  --shadow-pop: var(--elev-pop);
   --font-display: "Space Grotesk", system-ui, sans-serif;
   --font-sans: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
 /* Daylight: cool drafting-paper grays, amber darkened to ink weight. */
-:root {
-  color-scheme: light dark;
-  --page: #eff2f5;
+:root,
+:root[data-theme="light"] {
+  color-scheme: light;
+  --page: #edf0f4;
   --surface: #ffffff;
-  --raised: #f4f6f8;
+  --raised: #f5f7f9;
   --overlay: #e7ebef;
   --line-soft: #e4e9ee;
   --line: #d4dbe2;
@@ -53,11 +58,16 @@
   --syn-comment: #8b98a5;
   --badge-sat: 50%;
   --badge-lit: 34%;
+  --elev-card: 0 1px 2px rgb(20 30 40 / 0.05), 0 4px 14px rgb(20 30 40 / 0.06);
+  --elev-pop: 0 4px 10px rgb(20 30 40 / 0.1), 0 12px 32px rgb(20 30 40 / 0.12);
+  --grid-dot: rgb(26 37 48 / 0.07);
 }
 
-/* Night ops: signal amber on ink. */
+/* Night ops: signal amber on ink.
+ * Keep this block and the forced-dark block below identical. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
     --page: #0c1116;
     --surface: #10161d;
     --raised: #131a22;
@@ -82,7 +92,41 @@
     --syn-comment: #5a6a79;
     --badge-sat: 60%;
     --badge-lit: 70%;
+    --elev-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 6px 18px rgb(0 0 0 / 0.28);
+    --elev-pop: 0 4px 12px rgb(0 0 0 / 0.4), 0 16px 40px rgb(0 0 0 / 0.45);
+    --grid-dot: rgb(230 237 243 / 0.045);
   }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0c1116;
+  --surface: #10161d;
+  --raised: #131a22;
+  --overlay: #1a232e;
+  --line-soft: #1a232e;
+  --line: #232e3b;
+  --line-strong: #3d4d5f;
+  --fg: #e6edf3;
+  --fg-muted: #8b98a5;
+  --fg-faint: #5a6a79;
+  --accent: #e8a33d;
+  --accent-hover: #f4b858;
+  --on-accent: #0c1116;
+  --ok: #4ade80;
+  --err: #f87171;
+  --info: #6ca8e0;
+  --sel: #233246;
+  --syn-key: #7cb3e8;
+  --syn-string: #9ec98a;
+  --syn-number: #e8a33d;
+  --syn-atom: #c49ae8;
+  --syn-comment: #5a6a79;
+  --badge-sat: 60%;
+  --badge-lit: 70%;
+  --elev-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 6px 18px rgb(0 0 0 / 0.28);
+  --elev-pop: 0 4px 12px rgb(0 0 0 / 0.4), 0 16px 40px rgb(0 0 0 / 0.45);
+  --grid-dot: rgb(230 237 243 / 0.045);
 }
 
 html {
@@ -92,6 +136,9 @@ html {
 body {
   font-family: var(--font-sans);
   color: var(--fg);
+  /* Faint node-map dot grid behind everything. */
+  background-image: radial-gradient(var(--grid-dot) 1px, transparent 1px);
+  background-size: 22px 22px;
 }
 
 input[type="checkbox"],

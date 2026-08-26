@@ -71,7 +71,7 @@ export default function ExportStep() {
           {options.map((option) => (
             <label
               key={option.key}
-              className={`cursor-pointer rounded-lg border p-3 transition-colors ${
+              className={`cursor-pointer rounded-xl border p-3 shadow-card transition-colors ${
                 mode === option.key
                   ? "border-accent/70 bg-accent/5"
                   : "border-line bg-surface hover:border-line-strong"
@@ -97,7 +97,7 @@ export default function ExportStep() {
         <button
           type="button"
           onClick={copy}
-          className="rounded-lg bg-accent px-5 py-2 text-sm font-medium text-on-accent transition-colors hover:bg-accent-hover"
+          className="rounded-lg bg-accent shadow-card px-5 py-2 text-sm font-medium text-on-accent transition-colors hover:bg-accent-hover"
         >
           {copied ? t("export.copied") : t("export.copy")}
         </button>

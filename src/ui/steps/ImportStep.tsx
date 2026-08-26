@@ -128,7 +128,7 @@ function ParseStatus() {
 
   if (config.inputType === "UNKNOWN") {
     return (
-      <div className="rounded-lg border border-line bg-raised p-4">
+      <div className="rounded-xl border border-line bg-raised p-4 shadow-card">
         <div className="text-sm font-medium text-ok">{t("import.validYaml")}</div>
         <div className="mt-1 text-sm text-fg">{t("import.unknownInput")}</div>
         <div className="mt-1 text-sm text-fg-muted">{t("import.unknownHint")}</div>
@@ -221,7 +221,7 @@ export default function ImportStep() {
             <button
               type="button"
               onClick={() => parse(draft)}
-              className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-on-accent transition-colors hover:bg-accent-hover"
+              className="rounded-lg bg-accent shadow-card px-4 py-2 text-sm font-medium text-on-accent transition-colors hover:bg-accent-hover"
             >
               {t("import.parse")}
             </button>

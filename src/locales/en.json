@@ -16,6 +16,12 @@
     "back": "Back",
     "continue": "Continue"
   },
+  "theme": {
+    "label": "Theme",
+    "system": "Follow system",
+    "light": "Light",
+    "dark": "Dark"
+  },
   "import": {
     "inputMode": "Input Mode",
     "uploadFile": "Upload File",

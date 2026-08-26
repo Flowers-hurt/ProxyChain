@@ -31,7 +31,7 @@ export default function ChainStep() {
           <div className="mb-3 font-mono text-xs text-accent">
             {t("generate.combos", { count: includedChains.length })}
           </div>
-          <ul className="max-h-[22rem] divide-y divide-line-soft overflow-auto rounded-lg border border-line bg-surface">
+          <ul className="max-h-[22rem] divide-y divide-line-soft overflow-auto rounded-xl border border-line bg-surface shadow-card">
             {allChains.map((chain) => {
               const key = chainKey(chain);
               const included = !excludedChainKeys.includes(key);
@@ -62,7 +62,7 @@ export default function ChainStep() {
             })}
           </ul>
 
-          <div className="mt-5 rounded-lg border border-line bg-raised p-4">
+          <div className="mt-5 rounded-xl border border-line bg-raised p-4 shadow-card">
             <label className="flex cursor-pointer items-center gap-2.5">
               <input
                 type="checkbox"

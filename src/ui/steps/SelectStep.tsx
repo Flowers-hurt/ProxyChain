@@ -95,7 +95,7 @@ export default function SelectStep() {
         </div>
       </div>
 
-      <ul className="max-h-[26rem] divide-y divide-line-soft overflow-auto rounded-lg border border-line bg-surface">
+      <ul className="max-h-[26rem] divide-y divide-line-soft overflow-auto rounded-xl border border-line bg-surface shadow-card">
         {visible.map((proxy) => (
           <li key={proxy.id}>
             <label className="flex cursor-pointer items-center gap-3 px-3 py-2.5 transition-colors hover:bg-raised">

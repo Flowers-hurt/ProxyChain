@@ -16,7 +16,7 @@ export default function SummaryCard({ config }: { config: NormalizedConfig }) {
   const { t } = useTranslation();
   const full = config.inputType === "FULL_CONFIG";
   return (
-    <div className="rounded-lg border border-line bg-raised p-4">
+    <div className="rounded-xl border border-line bg-raised p-4 shadow-card">
       <div className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3">
         <Stat
           label={t("import.detectedFormat")}

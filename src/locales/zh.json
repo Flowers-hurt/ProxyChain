@@ -16,6 +16,12 @@
     "back": "上一步",
     "continue": "继续"
   },
+  "theme": {
+    "label": "主题",
+    "system": "跟随系统",
+    "light": "浅色",
+    "dark": "深色"
+  },
   "import": {
     "inputMode": "输入方式",
     "uploadFile": "上传文件",
