@@ -12,8 +12,8 @@ export default function TypeBadge({ type }: { type: string }) {
     <span
       className="inline-block rounded px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider"
       style={{
-        color: `hsl(${hue} 60% 70%)`,
-        backgroundColor: `hsl(${hue} 60% 70% / 0.12)`,
+        color: `hsl(${hue} var(--badge-sat) var(--badge-lit))`,
+        backgroundColor: `hsl(${hue} var(--badge-sat) var(--badge-lit) / 0.12)`,
       }}
     >
       {type}

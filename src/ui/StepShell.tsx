@@ -27,13 +27,13 @@ export default function StepShell({
   return (
     <section>
       <div className="mb-6">
-        <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-amber-glow">
+        <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent">
           Step {String(step).padStart(2, "0")} — {t(`steps.${STEP_KEYS[step - 1]}`)}
         </div>
-        <h1 className="mt-1.5 font-display text-2xl font-bold tracking-tight text-ink-100">
+        <h1 className="mt-1.5 font-display text-2xl font-bold tracking-tight text-fg">
           {title}
         </h1>
-        {intro && <p className="mt-1 text-sm text-ink-300">{intro}</p>}
+        {intro && <p className="mt-1 text-sm text-fg-muted">{intro}</p>}
       </div>
 
       {children}
@@ -43,7 +43,7 @@ export default function StepShell({
           <button
             type="button"
             onClick={() => setStep(step - 1)}
-            className="rounded-lg border border-ink-700 px-4 py-2 text-sm text-ink-300 transition-colors hover:border-ink-500 hover:text-ink-100"
+            className="rounded-lg border border-line px-4 py-2 text-sm text-fg-muted transition-colors hover:border-line-strong hover:text-fg"
           >
             ← {t("nav.back")}
           </button>
@@ -54,7 +54,7 @@ export default function StepShell({
           <button
             type="button"
             onClick={onContinue}
-            className="rounded-lg bg-amber-glow px-5 py-2 text-sm font-medium text-ink-950 transition-colors hover:bg-amber-bright"
+            className="rounded-lg bg-accent px-5 py-2 text-sm font-medium text-on-accent transition-colors hover:bg-accent-hover"
           >
             {continueLabel ?? t("nav.continue")} →
           </button>
@@ -62,7 +62,7 @@ export default function StepShell({
           <button
             type="button"
             disabled
-            className="cursor-not-allowed rounded-lg bg-ink-800 px-5 py-2 text-sm text-ink-500"
+            className="cursor-not-allowed rounded-lg bg-overlay px-5 py-2 text-sm text-fg-faint"
           >
             {continueLabel ?? t("nav.continue")} →
           </button>

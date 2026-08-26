@@ -64,7 +64,7 @@ export default function ExportStep() {
   return (
     <StepShell step={5} title={t("export.title")}>
       <div className="mb-4">
-        <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-ink-300">
+        <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-fg-muted">
           {t("export.outputMode")}
         </div>
         <div className="grid gap-2 sm:grid-cols-3">
@@ -73,8 +73,8 @@ export default function ExportStep() {
               key={option.key}
               className={`cursor-pointer rounded-lg border p-3 transition-colors ${
                 mode === option.key
-                  ? "border-amber-glow/70 bg-amber-glow/5"
-                  : "border-ink-700 bg-ink-900 hover:border-ink-500"
+                  ? "border-accent/70 bg-accent/5"
+                  : "border-line bg-surface hover:border-line-strong"
               }`}
             >
               <input
@@ -84,8 +84,8 @@ export default function ExportStep() {
                 onChange={() => setOutputMode(option.key)}
                 className="sr-only"
               />
-              <div className="text-sm font-medium text-ink-100">{option.label}</div>
-              <div className="mt-0.5 text-xs text-ink-300">{option.hint}</div>
+              <div className="text-sm font-medium text-fg">{option.label}</div>
+              <div className="mt-0.5 text-xs text-fg-muted">{option.hint}</div>
             </label>
           ))}
         </div>
@@ -97,14 +97,14 @@ export default function ExportStep() {
         <button
           type="button"
           onClick={copy}
-          className="rounded-lg bg-amber-glow px-5 py-2 text-sm font-medium text-ink-950 transition-colors hover:bg-amber-bright"
+          className="rounded-lg bg-accent px-5 py-2 text-sm font-medium text-on-accent transition-colors hover:bg-accent-hover"
         >
           {copied ? t("export.copied") : t("export.copy")}
         </button>
         <button
           type="button"
           onClick={download}
-          className="rounded-lg border border-ink-700 px-5 py-2 text-sm text-ink-100 transition-colors hover:border-ink-500"
+          className="rounded-lg border border-line px-5 py-2 text-sm text-fg transition-colors hover:border-line-strong"
         >
           {t("export.download")}
         </button>

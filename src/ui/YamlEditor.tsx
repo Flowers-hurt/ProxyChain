@@ -4,6 +4,8 @@ import { EditorState, StateEffect, StateField, Compartment } from "@codemirror/s
 import { openSearchPanel } from "@codemirror/search";
 import { basicSetup } from "codemirror";
 import { yaml } from "@codemirror/lang-yaml";
+import { HighlightStyle, syntaxHighlighting } from "@codemirror/language";
+import { tags } from "@lezer/highlight";
 import { parseDocument } from "yaml";
 import { useTranslation } from "react-i18next";
 
@@ -30,27 +32,44 @@ const errorLineField = StateField.define<DecorationSet>({
   provide: (field) => EditorView.decorations.from(field),
 });
 
-const editorTheme = EditorView.theme(
-  {
-    "&": { backgroundColor: "#10161d", color: "#e6edf3" },
-    ".cm-gutters": {
-      backgroundColor: "#10161d",
-      color: "#3d4d5f",
-      border: "none",
-      borderRight: "1px solid #1a232e",
+// Colors resolve through the semantic CSS vars in index.css, so the editor
+// follows the system color scheme; only CodeMirror's `dark` flag needs JS.
+const editorTheme = (dark: boolean) =>
+  EditorView.theme(
+    {
+      "&": { backgroundColor: "var(--surface)", color: "var(--fg)" },
+      ".cm-gutters": {
+        backgroundColor: "var(--surface)",
+        color: "var(--fg-faint)",
+        border: "none",
+        borderRight: "1px solid var(--line-soft)",
+      },
+      ".cm-activeLine": {
+        backgroundColor: "color-mix(in srgb, var(--overlay) 50%, transparent)",
+      },
+      ".cm-activeLineGutter": { backgroundColor: "transparent", color: "var(--fg-muted)" },
+      ".cm-selectionBackground, &.cm-focused .cm-selectionBackground": {
+        backgroundColor: "var(--sel) !important",
+      },
+      ".cm-cursor": { borderLeftColor: "var(--accent)" },
+      ".cm-panels": { backgroundColor: "var(--raised)", color: "var(--fg)" },
+      ".cm-searchMatch": {
+        backgroundColor: "color-mix(in srgb, var(--accent) 20%, transparent)",
+      },
+      ".cm-searchMatch-selected": {
+        backgroundColor: "color-mix(in srgb, var(--accent) 40%, transparent)",
+      },
     },
-    ".cm-activeLine": { backgroundColor: "#131a2280" },
-    ".cm-activeLineGutter": { backgroundColor: "transparent", color: "#8b98a5" },
-    ".cm-selectionBackground, &.cm-focused .cm-selectionBackground": {
-      backgroundColor: "#233246 !important",
-    },
-    ".cm-cursor": { borderLeftColor: "#e8a33d" },
-    ".cm-panels": { backgroundColor: "#131a22", color: "#e6edf3" },
-    ".cm-searchMatch": { backgroundColor: "#e8a33d33" },
-    ".cm-searchMatch-selected": { backgroundColor: "#e8a33d66" },
-  },
-  { dark: true },
-);
+    { dark },
+  );
+
+const yamlHighlight = HighlightStyle.define([
+  { tag: [tags.definition(tags.propertyName), tags.propertyName], color: "var(--syn-key)" },
+  { tag: tags.string, color: "var(--syn-string)" },
+  { tag: tags.number, color: "var(--syn-number)" },
+  { tag: [tags.bool, tags.null, tags.atom, tags.keyword], color: "var(--syn-atom)" },
+  { tag: tags.comment, color: "var(--syn-comment)", fontStyle: "italic" },
+]);
 
 interface YamlEditorProps {
   value: string;
@@ -78,13 +97,16 @@ export default function YamlEditor({
   useEffect(() => {
     if (!containerRef.current) return;
     const readOnlyCompartment = new Compartment();
+    const themeCompartment = new Compartment();
+    const scheme = window.matchMedia("(prefers-color-scheme: dark)");
     const view = new EditorView({
       state: EditorState.create({
         doc: value,
         extensions: [
           basicSetup,
           yaml(),
-          editorTheme,
+          syntaxHighlighting(yamlHighlight),
+          themeCompartment.of(editorTheme(scheme.matches)),
           errorLineField,
           readOnlyCompartment.of(EditorState.readOnly.of(readOnly)),
           EditorView.updateListener.of((update) => {
@@ -96,7 +118,11 @@ export default function YamlEditor({
       parent: containerRef.current,
     });
     viewRef.current = view;
+    const onSchemeChange = (e: MediaQueryListEvent) =>
+      view.dispatch({ effects: themeCompartment.reconfigure(editorTheme(e.matches)) });
+    scheme.addEventListener("change", onSchemeChange);
     return () => {
+      scheme.removeEventListener("change", onSchemeChange);
       view.destroy();
       viewRef.current = null;
     };
@@ -123,17 +149,17 @@ export default function YamlEditor({
   };
 
   const toolbarButton =
-    "px-2.5 py-1 text-xs font-mono text-ink-300 hover:text-ink-100 hover:bg-ink-800 rounded transition-colors";
+    "px-2.5 py-1 text-xs font-mono text-fg-muted hover:text-fg hover:bg-overlay rounded transition-colors";
 
   return (
     <div
       className={
         fullscreen
-          ? "fixed inset-0 z-50 flex flex-col bg-ink-950 p-4"
-          : "flex flex-col rounded-lg border border-ink-700 bg-ink-900 overflow-hidden"
+          ? "fixed inset-0 z-50 flex flex-col bg-page p-4"
+          : "flex flex-col rounded-lg border border-line bg-surface overflow-hidden"
       }
     >
-      <div className="flex items-center justify-end gap-1 border-b border-ink-800 bg-ink-850 px-2 py-1.5">
+      <div className="flex items-center justify-end gap-1 border-b border-line-soft bg-raised px-2 py-1.5">
         {!readOnly && (
           <>
             <button type="button" className={toolbarButton} onClick={format}>

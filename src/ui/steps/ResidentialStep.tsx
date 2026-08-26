@@ -6,7 +6,7 @@ import TypeBadge from "../TypeBadge";
 import StepShell from "../StepShell";
 
 const inputClass =
-  "w-full rounded-lg border border-ink-700 bg-ink-900 px-3 py-1.5 text-sm text-ink-100 placeholder:text-ink-500 focus:border-amber-glow/60 focus:outline-none";
+  "w-full rounded-lg border border-line bg-surface px-3 py-1.5 text-sm text-fg placeholder:text-fg-faint focus:border-accent/60 focus:outline-none";
 
 function AddForm() {
   const { t } = useTranslation();
@@ -45,16 +45,16 @@ function AddForm() {
 
   const field = (label: string, node: React.ReactNode, optional = false) => (
     <label className="block">
-      <span className="mb-1 block font-mono text-[10px] uppercase tracking-widest text-ink-300">
+      <span className="mb-1 block font-mono text-[10px] uppercase tracking-widest text-fg-muted">
         {label}
-        {optional && <span className="ml-1 text-ink-500">· {t("residential.optional")}</span>}
+        {optional && <span className="ml-1 text-fg-faint">· {t("residential.optional")}</span>}
       </span>
       {node}
     </label>
   );
 
   return (
-    <div className="rounded-lg border border-ink-700 bg-ink-850 p-4">
+    <div className="rounded-lg border border-line bg-raised p-4">
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         {field(
           t("residential.type"),
@@ -92,7 +92,7 @@ function AddForm() {
         type="button"
         onClick={add}
         disabled={!valid}
-        className="mt-4 rounded-lg bg-amber-glow px-4 py-2 text-sm font-medium text-ink-950 transition-colors hover:bg-amber-bright disabled:cursor-not-allowed disabled:bg-ink-800 disabled:text-ink-500"
+        className="mt-4 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-on-accent transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:bg-overlay disabled:text-fg-faint"
       >
         {t("residential.add")}
       </button>
@@ -114,7 +114,7 @@ function BatchForm() {
   };
 
   return (
-    <div className="rounded-lg border border-ink-700 bg-ink-850 p-4">
+    <div className="rounded-lg border border-line bg-raised p-4">
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
@@ -127,18 +127,18 @@ function BatchForm() {
           type="button"
           onClick={importBatch}
           disabled={text.trim() === ""}
-          className="rounded-lg bg-amber-glow px-4 py-2 text-sm font-medium text-ink-950 transition-colors hover:bg-amber-bright disabled:cursor-not-allowed disabled:bg-ink-800 disabled:text-ink-500"
+          className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-on-accent transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:bg-overlay disabled:text-fg-faint"
         >
           {t("residential.import")}
         </button>
-        <span className="font-mono text-[11px] text-ink-500">{t("residential.batchHint")}</span>
+        <span className="font-mono text-[11px] text-fg-faint">{t("residential.batchHint")}</span>
       </div>
       {errors.length > 0 && (
-        <div className="mt-3 rounded-lg border border-signal-red/40 bg-signal-red/5 p-3 text-sm">
-          <div className="text-signal-red">
+        <div className="mt-3 rounded-lg border border-err/40 bg-err/5 p-3 text-sm">
+          <div className="text-err">
             {t("residential.batchErrors", { count: errors.length })}
           </div>
-          <ul className="mt-1 space-y-0.5 font-mono text-xs text-ink-300">
+          <ul className="mt-1 space-y-0.5 font-mono text-xs text-fg-muted">
             {errors.map((e) => (
               <li key={e.line}>
                 L{e.line}: {e.text}
@@ -165,14 +165,14 @@ export default function ResidentialStep() {
       intro={t("residential.subtitle")}
       onContinue={residentials.length > 0 ? () => setStep(4) : undefined}
     >
-      <div className="mb-3 inline-flex rounded-lg border border-ink-700 bg-ink-900 p-0.5">
+      <div className="mb-3 inline-flex rounded-lg border border-line bg-surface p-0.5">
         {(["form", "batch"] as const).map((key) => (
           <button
             key={key}
             type="button"
             onClick={() => setTab(key)}
             className={`rounded-md px-4 py-1.5 text-sm transition-colors ${
-              tab === key ? "bg-ink-800 font-medium text-ink-100" : "text-ink-300 hover:text-ink-100"
+              tab === key ? "bg-overlay font-medium text-fg" : "text-fg-muted hover:text-fg"
             }`}
           >
             {key === "form" ? t("residential.addProxy") : t("residential.batchPaste")}
@@ -183,31 +183,31 @@ export default function ResidentialStep() {
       {tab === "form" ? <AddForm /> : <BatchForm />}
 
       <div className="mt-5">
-        <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-ink-300">
+        <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-fg-muted">
           {t("residential.listTitle", { count: residentials.length })}
         </div>
         {residentials.length === 0 ? (
-          <p className="text-sm text-ink-500">{t("residential.empty")}</p>
+          <p className="text-sm text-fg-faint">{t("residential.empty")}</p>
         ) : (
-          <ul className="divide-y divide-ink-800 rounded-lg border border-ink-700 bg-ink-900">
+          <ul className="divide-y divide-line-soft rounded-lg border border-line bg-surface">
             {residentials.map((r) => (
               <li key={r.id} className="flex items-center gap-3 px-3 py-2.5">
                 <div className="min-w-0 flex-1">
-                  <div className="truncate text-sm text-ink-100">{r.name}</div>
+                  <div className="truncate text-sm text-fg">{r.name}</div>
                   <div className="mt-0.5 flex items-center gap-2">
                     <TypeBadge type={r.type} />
-                    <span className="font-mono text-[11px] text-ink-300">
+                    <span className="font-mono text-[11px] text-fg-muted">
                       {r.server}:{r.port}
                     </span>
                     {r.username && (
-                      <span className="font-mono text-[11px] text-ink-500">{r.username}</span>
+                      <span className="font-mono text-[11px] text-fg-faint">{r.username}</span>
                     )}
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={() => removeResidential(r.id)}
-                  className="text-xs text-ink-500 transition-colors hover:text-signal-red"
+                  className="text-xs text-fg-faint transition-colors hover:text-err"
                 >
                   {t("residential.remove")}
                 </button>

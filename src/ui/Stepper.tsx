@@ -19,7 +19,7 @@ export default function Stepper() {
               <div
                 aria-hidden
                 className={`mx-1 h-px w-4 sm:mx-2 sm:w-8 ${
-                  n <= step ? "bg-amber-glow/60" : "bg-ink-700"
+                  n <= step ? "bg-accent/60" : "bg-line"
                 }`}
               />
             )}
@@ -34,21 +34,21 @@ export default function Stepper() {
               <span
                 className={`flex h-6 w-6 items-center justify-center rounded-full border font-mono text-[11px] ${
                   state === "active"
-                    ? "border-amber-glow bg-amber-glow/15 text-amber-bright"
+                    ? "border-accent bg-accent/15 text-accent-hover"
                     : state === "done"
-                      ? "border-amber-glow/50 text-amber-glow/80 group-hover:bg-ink-800"
-                      : "border-ink-700 text-ink-500"
+                      ? "border-accent/50 text-accent/80 group-hover:bg-overlay"
+                      : "border-line text-fg-faint"
                 }`}
               >
                 {state === "done" ? "✓" : n}
               </span>
               <span
-                className={`hidden text-xs sm:block ${
+                className={`text-xs ${
                   state === "active"
-                    ? "font-medium text-ink-100"
+                    ? "block font-medium text-fg"
                     : state === "done"
-                      ? "text-ink-300"
-                      : "text-ink-500"
+                      ? "hidden text-fg-muted sm:block"
+                      : "hidden text-fg-faint sm:block"
                 }`}
               >
                 {t(`steps.${key}`)}

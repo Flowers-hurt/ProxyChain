@@ -4,10 +4,10 @@ import type { NormalizedConfig } from "../core/parser";
 function Stat({ label, value }: { label: string; value: string | number }) {
   return (
     <div>
-      <div className="font-mono text-[10px] uppercase tracking-widest text-ink-300">
+      <div className="font-mono text-[10px] uppercase tracking-widest text-fg-muted">
         {label}
       </div>
-      <div className="mt-0.5 font-display text-lg font-medium text-ink-100">{value}</div>
+      <div className="mt-0.5 font-display text-lg font-medium text-fg">{value}</div>
     </div>
   );
 }
@@ -16,7 +16,7 @@ export default function SummaryCard({ config }: { config: NormalizedConfig }) {
   const { t } = useTranslation();
   const full = config.inputType === "FULL_CONFIG";
   return (
-    <div className="rounded-lg border border-ink-700 bg-ink-850 p-4">
+    <div className="rounded-lg border border-line bg-raised p-4">
       <div className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3">
         <Stat
           label={t("import.detectedFormat")}

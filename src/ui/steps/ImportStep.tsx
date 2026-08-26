@@ -15,7 +15,7 @@ function ModeSwitch() {
     { key: "paste", label: t("import.pasteConfig") },
   ];
   return (
-    <div role="radiogroup" aria-label={t("import.inputMode")} className="inline-flex rounded-lg border border-ink-700 bg-ink-900 p-0.5">
+    <div role="radiogroup" aria-label={t("import.inputMode")} className="inline-flex rounded-lg border border-line bg-surface p-0.5">
       {modes.map((m) => (
         <button
           key={m.key}
@@ -25,8 +25,8 @@ function ModeSwitch() {
           onClick={() => setInputMode(m.key)}
           className={`rounded-md px-4 py-1.5 text-sm transition-colors ${
             inputMode === m.key
-              ? "bg-ink-800 font-medium text-ink-100"
-              : "text-ink-300 hover:text-ink-100"
+              ? "bg-overlay font-medium text-fg"
+              : "text-fg-muted hover:text-fg"
           }`}
         >
           {m.label}
@@ -75,15 +75,15 @@ function UploadZone() {
         }}
         className={`flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-6 py-14 text-center transition-colors ${
           dragging
-            ? "border-amber-glow bg-amber-glow/5"
-            : "border-ink-700 bg-ink-900 hover:border-ink-500"
+            ? "border-accent bg-accent/5"
+            : "border-line bg-surface hover:border-line-strong"
         }`}
       >
-        <div className="font-display text-lg font-medium text-ink-100">
+        <div className="font-display text-lg font-medium text-fg">
           {t("import.dropHere")}
         </div>
-        <div className="mt-1 text-sm text-ink-300">{t("import.orBrowse")}</div>
-        <div className="mt-3 font-mono text-[11px] text-ink-500">
+        <div className="mt-1 text-sm text-fg-muted">{t("import.orBrowse")}</div>
+        <div className="mt-3 font-mono text-[11px] text-fg-faint">
           {t("import.extensions")}
         </div>
       </div>
@@ -98,7 +98,7 @@ function UploadZone() {
           e.target.value = "";
         }}
       />
-      {fileError && <p className="mt-3 text-sm text-signal-red">{fileError}</p>}
+      {fileError && <p className="mt-3 text-sm text-err">{fileError}</p>}
     </div>
   );
 }
@@ -111,15 +111,15 @@ function ParseStatus() {
 
   if (!parseResult.ok) {
     return (
-      <div className="rounded-lg border border-signal-red/40 bg-signal-red/5 p-4">
-        <div className="font-mono text-xs font-semibold uppercase tracking-widest text-signal-red">
+      <div className="rounded-lg border border-err/40 bg-err/5 p-4">
+        <div className="font-mono text-xs font-semibold uppercase tracking-widest text-err">
           {t("import.syntaxError")}
         </div>
-        <div className="mt-2 font-mono text-sm text-ink-100">
+        <div className="mt-2 font-mono text-sm text-fg">
           {t("import.line")} {parseResult.error.line} · {t("import.column")}{" "}
           {parseResult.error.column}
         </div>
-        <div className="mt-1 text-sm text-ink-300">{parseResult.error.message}</div>
+        <div className="mt-1 text-sm text-fg-muted">{parseResult.error.message}</div>
       </div>
     );
   }
@@ -128,10 +128,10 @@ function ParseStatus() {
 
   if (config.inputType === "UNKNOWN") {
     return (
-      <div className="rounded-lg border border-ink-700 bg-ink-850 p-4">
-        <div className="text-sm font-medium text-signal-green">{t("import.validYaml")}</div>
-        <div className="mt-1 text-sm text-ink-100">{t("import.unknownInput")}</div>
-        <div className="mt-1 text-sm text-ink-300">{t("import.unknownHint")}</div>
+      <div className="rounded-lg border border-line bg-raised p-4">
+        <div className="text-sm font-medium text-ok">{t("import.validYaml")}</div>
+        <div className="mt-1 text-sm text-fg">{t("import.unknownInput")}</div>
+        <div className="mt-1 text-sm text-fg-muted">{t("import.unknownHint")}</div>
       </div>
     );
   }
@@ -141,8 +141,8 @@ function ParseStatus() {
     <div className="space-y-3">
       {fileName && (
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <span className="font-mono text-sm text-signal-green">✓ {fileName}</span>
-          <span className="font-mono text-xs text-ink-300">
+          <span className="font-mono text-sm text-ok">✓ {fileName}</span>
+          <span className="font-mono text-xs text-fg-muted">
             {t("import.proxiesShort", { count: config.proxies.length })}
             {config.proxyGroups.length > 0 &&
               ` · ${t("import.groupsShort", { count: config.proxyGroups.length })}`}
@@ -152,13 +152,13 @@ function ParseStatus() {
         </div>
       )}
       {partial && !fileName && (
-        <div className="rounded-lg border border-signal-green/30 bg-signal-green/5 p-3 text-sm">
-          <span className="font-medium text-signal-green">{t("import.validYaml")}</span>{" "}
-          <span className="text-ink-100">{t("import.partialDetected")}</span>{" "}
-          <span className="text-ink-100">
+        <div className="rounded-lg border border-ok/30 bg-ok/5 p-3 text-sm">
+          <span className="font-medium text-ok">{t("import.validYaml")}</span>{" "}
+          <span className="text-fg">{t("import.partialDetected")}</span>{" "}
+          <span className="text-fg">
             {t("import.nodesDetected", { count: config.proxies.length })}
           </span>{" "}
-          <span className="text-ink-300">{t("import.youCanContinue")}</span>
+          <span className="text-fg-muted">{t("import.youCanContinue")}</span>
         </div>
       )}
       <SummaryCard config={config} />
@@ -207,7 +207,7 @@ export default function ImportStep() {
     >
       <div className="space-y-5">
         <div>
-          <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-ink-300">
+          <div className="mb-2 font-mono text-[10px] uppercase tracking-widest text-fg-muted">
             {t("import.inputMode")}
           </div>
           <ModeSwitch />
@@ -221,7 +221,7 @@ export default function ImportStep() {
             <button
               type="button"
               onClick={() => parse(draft)}
-              className="rounded-lg bg-amber-glow px-4 py-2 text-sm font-medium text-ink-950 transition-colors hover:bg-amber-bright"
+              className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-on-accent transition-colors hover:bg-accent-hover"
             >
               {t("import.parse")}
             </button>

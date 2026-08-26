@@ -40,7 +40,7 @@ export default function SelectStep() {
 
   const visibleIds = visible.map((p) => p.id);
   const toolButton =
-    "rounded border border-ink-700 px-2.5 py-1 text-xs text-ink-300 transition-colors hover:border-ink-500 hover:text-ink-100";
+    "rounded border border-line px-2.5 py-1 text-xs text-fg-muted transition-colors hover:border-line-strong hover:text-fg";
 
   return (
     <StepShell
@@ -55,13 +55,13 @@ export default function SelectStep() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder={t("select.search")}
-          className="w-48 rounded-lg border border-ink-700 bg-ink-900 px-3 py-1.5 text-sm text-ink-100 placeholder:text-ink-500 focus:border-amber-glow/60 focus:outline-none"
+          className="w-48 rounded-lg border border-line bg-surface px-3 py-1.5 text-sm text-fg placeholder:text-fg-faint focus:border-accent/60 focus:outline-none"
         />
         <select
           value={typeFilter}
           onChange={(e) => setTypeFilter(e.target.value)}
           aria-label={t("select.filterByType")}
-          className="rounded-lg border border-ink-700 bg-ink-900 px-2 py-1.5 font-mono text-xs text-ink-300 focus:border-amber-glow/60 focus:outline-none"
+          className="rounded-lg border border-line bg-surface px-2 py-1.5 font-mono text-xs text-fg-muted focus:border-accent/60 focus:outline-none"
         >
           <option value="">{t("select.allTypes")}</option>
           {types.map((type) => (
@@ -95,22 +95,22 @@ export default function SelectStep() {
         </div>
       </div>
 
-      <ul className="max-h-[26rem] divide-y divide-ink-800 overflow-auto rounded-lg border border-ink-700 bg-ink-900">
+      <ul className="max-h-[26rem] divide-y divide-line-soft overflow-auto rounded-lg border border-line bg-surface">
         {visible.map((proxy) => (
           <li key={proxy.id}>
-            <label className="flex cursor-pointer items-center gap-3 px-3 py-2.5 transition-colors hover:bg-ink-850">
+            <label className="flex cursor-pointer items-center gap-3 px-3 py-2.5 transition-colors hover:bg-raised">
               <input
                 type="checkbox"
                 checked={selectedIds.includes(proxy.id)}
                 onChange={() => toggle(proxy.id)}
-                className="h-4 w-4 accent-[#e8a33d]"
+                className="h-4 w-4"
               />
               <div className="min-w-0 flex-1">
-                <div className="truncate text-sm text-ink-100">{proxy.name}</div>
+                <div className="truncate text-sm text-fg">{proxy.name}</div>
                 <div className="mt-0.5 flex items-center gap-2">
                   <TypeBadge type={proxy.type} />
                   {proxy.server && (
-                    <span className="truncate font-mono text-[11px] text-ink-300">
+                    <span className="truncate font-mono text-[11px] text-fg-muted">
                       {proxy.server}
                       {proxy.port !== undefined && `:${proxy.port}`}
                     </span>
@@ -121,7 +121,7 @@ export default function SelectStep() {
           </li>
         ))}
         {visible.length === 0 && (
-          <li className="px-3 py-8 text-center text-sm text-ink-500">
+          <li className="px-3 py-8 text-center text-sm text-fg-faint">
             {t("select.empty")}
           </li>
         )}
