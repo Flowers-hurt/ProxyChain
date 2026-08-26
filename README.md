@@ -49,10 +49,24 @@ Input → Syntax Parse → Structure Detection → Normalization → Proxy Extra
 ## Wizard
 
 1. **Import** — upload, paste, or drop your config
+
+   <img src="static/images/step1.png" alt="Step 1 — Import" width="760" />
+
 2. **Select Proxies** — pick the airport nodes to chain
+
+   <img src="static/images/step2.png" alt="Step 2 — Select Proxies" width="760" />
+
 3. **Residential Proxy** — add exits by form, `host:port:user:pass`, or YAML
+
+   <img src="static/images/step3.png" alt="Step 3 — Residential Proxy" width="760" />
+
 4. **Generate Chain** — preview the `dialer-proxy` nodes and optional proxy group
+
+   <img src="static/images/step4.png" alt="Step 4 — Generate Chain" width="760" />
+
 5. **Export** — copy or download the result
+
+   <img src="static/images/step5.png" alt="Step 5 — Export" width="760" />
 
 ## Development
 
