@@ -126,3 +126,7 @@ hosts (e.g. `VITE_BASE=/ npm run build` for a root domain or Vercel).
 ## Privacy
 
 No backend. No upload. No analytics. Proxy credentials and configs stay in your browser.
+
+## License
+
+[MIT](./LICENSE)

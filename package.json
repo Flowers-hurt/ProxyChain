@@ -2,6 +2,16 @@
   "name": "proxychain",
   "private": true,
   "version": "0.0.0",
+  "description": "Build Clash chain-proxy configs in your browser — airport node × residential exit via dialer-proxy, no server upload.",
+  "license": "MIT",
+  "homepage": "https://flowers-hurt.github.io/ProxyChain/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Flowers-hurt/ProxyChain.git"
+  },
+  "engines": {
+    "node": ">=22"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
